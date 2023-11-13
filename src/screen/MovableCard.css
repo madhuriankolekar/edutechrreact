@@ -1,0 +1,29 @@
+/* MovableCard.css */
+
+.movable-card {
+    position: absolute;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 16px;
+    boxShadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: grab;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .movable-card.dragging {
+    cursor: grabbing;
+  }
+  
+  .card-content {
+    padding: 16px;
+  }
+  
+  .card h3 {
+    margin-bottom: 8px;
+  }
+  
+  .card p {
+    color: #666;
+  }
+  
