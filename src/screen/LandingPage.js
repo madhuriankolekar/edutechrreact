@@ -1,6 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
+import styled, { keyframes } from 'styled-components';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+import CardContent from '@material-ui/core/CardContent';
 import {
   AppBar,
   Container,
@@ -21,9 +24,27 @@ import ReactPlayer from 'react-player';
 import image1 from '../assert/images1.jpg';
 import image2 from '../assert/images2.jpg';
 import image3 from '../assert/images3.jpg';
+import image4 from '../assert/download2.jpg';
+import image5 from '../assert/download5.jpg';
+import image6 from '../assert/images.jpg';
+import image7 from '../assert/images55.jpg';
+import image8 from '../assert/images11.jpg';
 import Card from './Card';
+import MathCardsScreen from './MathCardsScreen';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import Collapse from '@material-ui/core/Collapse';
+import { BrowserRouter as Router, Routes, Route, Link , Switch } from 'react-router-dom';
+
+import Grade5Screen from './Grade5Screen'; // Import the Grade5Screen component
+
 import { useSpring, animated } from 'react-spring';
 import Cardcss from './Cardcss.css';
+
+const linkStyle = {
+    textDecoration: 'none',
+    color: 'inherit',
+  };
 const theme = createTheme({
   palette: {
     primary: {
@@ -38,6 +59,12 @@ const theme = createTheme({
 const LandingPage = () => {
 
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [isMathOpen, setIsMathOpen] = useState(false);
+ 
+  const handleMathToggle = () => {
+    setIsMathOpen(!isMathOpen);
+  };
+
 
   const toggleDrawer = (open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -47,7 +74,7 @@ const LandingPage = () => {
   };
 
   const [currentImage, setCurrentImage] = useState(0);
-  const images = [image1, image2, image3];
+  const images = [image1, image2, image3,image4,image5,image6,image7,image8];
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -74,66 +101,85 @@ const LandingPage = () => {
     <ThemeProvider theme={theme}>
       <div>
         <CssBaseline />
+        
         <AppBar position="sticky">
-          <Toolbar>
-            <IconButton edge="start" color="inherit" onClick={toggleDrawer(true)}>
-              Menu
+      <Toolbar style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <IconButton edge="start" color="inherit" onClick={toggleDrawer(true)}>
+            Menu
+          </IconButton>
+          <Typography variant="h6" style={{ marginLeft: 16 }}>
+            Edutech
+          </Typography>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+          <Paper component="form">
+            <InputBase
+              placeholder="Search..."
+              inputProps={{ 'aria-label': 'search' }}
+              style={{ width: '300px', padding: '8px' }}
+            />
+            <IconButton color="inherit">
+              <SearchIcon />
             </IconButton>
-            <Typography variant="h6" style={{ flexGrow: 1 }}>
-              Imgur
-            </Typography>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <div>
-                <IconButton color="inherit">
-                  <SearchIcon />
-                </IconButton>
-              </div>
-              <Paper component="form" style={{ marginLeft: 16 }}>
-                <InputBase placeholder="Search..." inputProps={{ 'aria-label': 'search' }} />
-              </Paper>
-            </div>
-          </Toolbar>
-        </AppBar>
-
+          </Paper>
+        </div>
+      </Toolbar>
+    </AppBar>
+    <Router>
+      <div>
         <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
           <List>
-            {['About', 'Press', 'Apps', 'Advertise', 'Community', 'Careers'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
+            <ListItem button onClick={handleMathToggle}>
+              <ListItemText primary="Mathematics" />
+              <ListItemIcon>
+                <ChevronRightIcon />
+              </ListItemIcon>
+            </ListItem>
+            <Collapse in={isMathOpen} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                {/* Use the Link component to navigate to Grade5Screen */}
+                <ListItem button component={Link} to="/grade5" style={linkStyle}>
+                  <ListItemText primary="Grade 5" />
+                </ListItem>
+              </List>
+            </Collapse>
           </List>
         </Drawer>
 
+        {/* Define the route for Grade5Screen within Routes */}
+        <Switch>
+        <Route path="/grade5" component={Grade5Screen} />
+      </Switch>
+      </div>
+    </Router>
         <Container component="main" style={{ marginTop: 64 }}>
-          <div>
-            <h2>  Imgur</h2>
-            <img
-              src={images[currentImage]}
-              alt={`Image ${currentImage + 1}`}
-              style={{ maxWidth: '100%' }}
-            />
-          </div>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+  <img
+    src={images[currentImage]}
+    alt={`Image ${currentImage + 1}`}
+    style={{ maxWidth: '50%', marginRight: '20px' }}
+  />
+  <div>
+    <h2>Edutech Made Learning Easier</h2>
+    <p>
+      The Edutech application revolutionizes learning with a wealth of examples, solutions, and instructional videos. Our platform is designed to make learning easy and enjoyable, providing students with a comprehensive educational experience. Explore a diverse range of subjects with confidence, as our application empowers you with the resources you need to succeed.
+    </p>
+  </div>
+</div>
+
+<MathCardsScreen/>   
 
           <Container component="section" style={{ padding: '20px 0' }}>
             <Typography variant="h4" gutterBottom>
               Featured Video
             </Typography>
             <ReactPlayer
-              url="https://www.youtube.com/watch?v=W_Msv57LXrw"
+              url="https://www.youtube.com/watch?v=HIxr36qhjRQ"
               width="100%"
               height="100%"
               controls
             />
-          </Container>
-
-          <Container component="section" style={{ padding: '20px 0' }}>
-            <Typography variant="h4" gutterBottom>
-              Featured Cards
-            </Typography>
-            {Array.from({ length: 10 }, (_, index) => (
-              <Card key={index} /* Pass necessary props to your Card component */ />
-            ))}
           </Container>
 
           <Container component="section" style={{ padding: '20px 0' }}>
@@ -145,22 +191,21 @@ const LandingPage = () => {
           </Container>
         </Container>
       </div>
-      
-      <Container component="section" style={{ padding: '20px 0' }}>
-          <Typography variant="h4" gutterBottom>
-            Shopping Cards (Animated)
-          </Typography>
-          {Array.from({ length: 20 }, (_, index) => (
-            <ShoppingCard
-              key={index}
-              title={`Product ${index + 1}`}
-              description={`Description for Product ${index + 1}`}
-            />
-          ))}
-        </Container>
-      
-    </ThemeProvider>
+       </ThemeProvider>
   );
 };
 
 export default LandingPage;
+
+
+
+// <--Container component="section" style={{ padding: '20px 0' }}>
+// <Typography variant="h4" gutterBottom>
+//   Featured Cards
+// </Typography>
+// {Array.from({ length: 10 }, (_, index) => (
+//   <Card key={index} /* Pass necessary props to your Card component */ />
+// ))}
+// </Container>-->
+
+
